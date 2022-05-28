@@ -30,28 +30,9 @@ function returnFile(tmpFile, res) {
     let file = (tmpFile === "/") ? "/index.html" : tmpFile
     // if file exists in the public folder, serve it
     if (fileExists(`public${file}`)){
-        fs.readFile(`public${file}`, (err, data) => {
-            // the content type to use. should never be undefined
-            let cType = fileTypes[file.replace(/^\/?.*?\./g,"")]
-            if (!cType){
-                cType = ""
-            }
-            res.writeHead(200, {'Content-Type':  cType});
-            res.write(data);
-            res.end();
-        })
+        fs.readFile(`public${file}`, (err, data) => handleRes(err, data, res, file, true))
     } else {
-        figlet('404!!', function(err, data) {
-            if (err) {
-                console.log('Something went wrong...');
-                console.dir(err);
-                return;
-            }
-            // send a 404 to the client
-            res.writeHead(404)
-            res.write(data);
-            res.end();
-        });
+        figlet('404!!', (err, data) => handleRes(err, data, res,file, false));
     }
 }
 /**
@@ -65,4 +46,29 @@ function fileExists(path) {
     }
     return true
 }
+/**
+ * @param {NodeJS.ErrnoException} err
+ * @param {Buffer} data
+ * @param {module:http.ServerResponse} res
+ * @param {string} file
+ * @param {boolean} success
+ */
+function handleRes(err, data, res, file, success ){
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    } else if (success){
+        let cType = fileTypes[file.replace(/^\/?.*?\./g,"")]
+        if (!cType){
+            cType = ""
+        }
+        res.writeHead(200, {'Content-Type':  cType});
+    } else {
+        res.writeHead(404)
+    }
+    res.write(data);
+    res.end();
+}
+
 server.listen(8000);
