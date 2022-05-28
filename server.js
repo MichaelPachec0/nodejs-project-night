@@ -22,6 +22,8 @@ const server = http.createServer((req, res) =>{
 })
 
 /**
+ * Makes sure there is a file in the correct location (hardcoded to public for now), if so then serve
+ * the file.
  * @param {string} tmpFile
  * @param {module:http.ServerResponse} res
  */
@@ -36,7 +38,7 @@ function returnFile(tmpFile, res) {
     }
 }
 /**
- * @param {string} path
+ * @param {string} path to check if file exists
  */
 function fileExists(path) {
     try {
@@ -47,11 +49,14 @@ function fileExists(path) {
     return true
 }
 /**
- * @param {NodeJS.ErrnoException} err
- * @param {Buffer} data
- * @param {module:http.ServerResponse} res
- * @param {string} file
- * @param {boolean} success
+ * Handles Response code, sends back the data to the client. Look at the filetypes object in file.js for
+ * the possible types that this function serves.
+ * @param {NodeJS.ErrnoException} err Nodejs error, something went awful if this is not falsy
+ * @param {Buffer} data data that was read from file
+ * @param {module:http.ServerResponse} res the response object, used to send back data to the client
+ * @param {string} file filepath used to check for filetype
+ * @param {boolean} success if the file was found this will be true allowing for the server to serve the file
+ * in question
  */
 function handleRes(err, data, res, file, success ){
     if (err) {
@@ -59,10 +64,10 @@ function handleRes(err, data, res, file, success ){
         console.dir(err);
         return;
     } else if (success){
+        // the content type to use. should never be undefined
         let cType = fileTypes[file.replace(/^\/?.*?\./g,"")]
-        if (!cType){
-            cType = ""
-        }
+        // just in case it is, set make sure there is a value
+        if (!cType){ cType = "" }
         res.writeHead(200, {'Content-Type':  cType});
     } else {
         res.writeHead(404)
