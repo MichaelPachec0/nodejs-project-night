@@ -47,7 +47,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - HTML5
 - CSS3
-- JavaScritp (ES6+)
+- JavaScript (ES6+)
 - NodeJs
 
 ## Contributors
