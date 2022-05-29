@@ -39,7 +39,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Use `$ git checkout -b beta` to create and move to beta branch.
 1. Use `$ git branch` to make sure that you are on beta branch before making any new features/changes.
-1. After commiting any new features/changes locally; Use `$ git push -u orgin beta` to push the changes to your forked respository.
+1. After commiting any new features/changes locally; Use `$ git push -u origin beta` to push the changes to your forked respository.
 1. To contribute back to the main repository, you will have to create a new [Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
 1. Happy Coding!
 
@@ -47,7 +47,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - HTML5
 - CSS3
-- JavaScritp (ES6+)
+- JavaScript (ES6+)
 - NodeJs
 
 ## Contributors
