@@ -65,7 +65,7 @@ function handleRes(err, data, res, file, success ){
         return;
     } else if (success){
         // the content type to use. should never be undefined
-        let cType = fileTypes[file.replace(/^\/?.*?\./g,"")]
+        let cType = fileTypes[file.split('.')[1]] //splits the string into an array of 2 elements, from wherever '.' is and returns the extension
         // just in case it is, set make sure there is a value
         if (!cType){ cType = "" }
         res.writeHead(200, {'Content-Type':  cType});
