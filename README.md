@@ -61,3 +61,4 @@ These instructions will get you a copy of the project up and running on your loc
 - [Dex J](https://github.com/Dex-theDev)
 - [Sumit Saurabh](https://github.com/sumitsaurabh927)
 - [Theresa](https://github.com/tmills0203)
+- [Mire](https://github.com/mire-web)
