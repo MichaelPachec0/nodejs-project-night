@@ -1,13 +1,14 @@
 body {
   min-height: 100vh;
   background-color: rgb(82, 82, 141);
+  font-size: 62.5%;
 }
 
 
 .grid-container {
   display: grid;
   margin: auto;
-  position: absolute;
+  position: absolute; 
   top: 0; bottom: 0; left: 0; right: 0;
   width: 50%;
   height: 60vh;
@@ -24,7 +25,24 @@ body {
   align-self: center;
   height: 100%;
 }
-
+.btn {
+  margin: 0 auto;
+  display: block;
+  padding: .75em 1.75em;
+  border-radius: 1.5rem;
+  font-size: .75rem;
+  background-color: #bf4d4d;
+  border: #c61210 solid 2px;
+  color: azure;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  position: absolute; right: 30em;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #c61210;
+  transition: ease-in 200ms;
+}
 @media screen and (max-width: 1000px) {
   .grid-container {
     width: 80%;
