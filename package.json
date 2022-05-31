@@ -12,6 +12,8 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
-    "figlet": "^1.5.2"
+    "figlet": "^1.5.2",
+    "node-fetch": "^3.2.4",
+    "dotenv": "^16.0.1"
   }
 }

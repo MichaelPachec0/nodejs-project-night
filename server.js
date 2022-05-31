@@ -1,5 +1,7 @@
 import {createRequire} from "module";
 const require = createRequire(import.meta.url);
+// load up env variables from the .env file
+require('dotenv').config()
 
 const http = require('http');
 const fs = require('fs');
@@ -7,6 +9,7 @@ const url = require('url');
 const figlet = require('figlet');
 
 import {fileTypes} from "./file.js";
+import { returnData } from "./api.js";
 
 
 const server = http.createServer((req, res) =>{
@@ -14,8 +17,9 @@ const server = http.createServer((req, res) =>{
     const base = ((req.protocol)? req.protocol : "http") + '://' + req.headers.host + '/'
     const page = new url.URL(req.url, base).pathname
     const params = new URLSearchParams(page.search)
-    if (page === "/api"){
+    if (page === `/api`){
         // TODO: handle api here
+        returnData()
     } else {
         returnFile(page, res)
     }
@@ -75,5 +79,6 @@ function handleRes(err, data, res, file, success ){
     res.write(data);
     res.end();
 }
-
+console.log(process.env)
+console.log(await returnData())
 server.listen(8000);
