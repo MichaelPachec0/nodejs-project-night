@@ -14,10 +14,11 @@ import { _parse } from "./api.js";
 
 const server = http.createServer((req, res) => {
     // if protocol is undefined, default to http for now
-    const base = ((req.protocol) ? req.protocol : "http") + '://' + req.headers.host + '/'
-    const page = new url.URL(req.url, base).pathname
-    const params = new URLSearchParams(page.search)
-    if (page === `/api`) {
+    const base = ((req.protocol)? req.protocol : "http") + '://' + req.headers.host + '/'
+    const fullURL =  new url.URL(req.url, base)
+    const page = fullURL.pathname
+    const params = fullURL.searchParams
+    if (page === "/api"){
         // TODO: handle api here
         jsonSend(undefined, params, res)
     } else {
