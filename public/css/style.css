@@ -46,11 +46,11 @@ header{
  }
 
  /* An idea for JavaScript: toggle "hidden" class when clicked. Remove "hidden" class permanently when two cards match*/
- .card .hidden .card-back{
+ .card.visible .card-back{
     transform: rotateY(-180deg);
  }
 
- .card .hidden .card-front{
+ .card.visible .card-front{
     transform: rotateX(0deg);
  }
 
