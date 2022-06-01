@@ -81,15 +81,4 @@ function handleRes(err, data, res, file, success) {
     res.end();
 }
 
-// DO NOT MERGE
-function jsonSend(err, params, res) {
-    if (err) {
-        console.log('Something went wrong...');
-        console.dir(err);
-        return;
-    }
-    let cType = fileTypes["json"]
-    res.writeHead(200, { 'Content-Type': cType });
-    _parse(params).then((data) => res.end(data))
-}
 server.listen(8000);
