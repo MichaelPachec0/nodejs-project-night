@@ -20,7 +20,7 @@ const server = http.createServer((req, res) => {
     const params = fullURL.searchParams
     if (page === "/api"){
         // TODO: handle api here
-        jsonSend(undefined, params, res)
+        // TODO
     } else {
         returnFile(page, res)
     }
