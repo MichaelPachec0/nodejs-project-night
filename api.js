@@ -36,6 +36,17 @@ async function returnPokes() {
   return ret
 }
 
+/**
+ * 
+ * @param  {...object} choices sends poke object
+ * @returns {boolean} true if its a match, else false
+ */
+
+async function compare(...choices) {
+  return choices[0].name === choices[1].name
+}
+
+
 /** 
  * handles requests and sends them to the actual async functions
  * @param {url.URLSearchParams} params 
