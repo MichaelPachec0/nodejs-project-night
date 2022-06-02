@@ -9,7 +9,7 @@ const url = require('url');
 const figlet = require('figlet');
 
 import { fileTypes } from "./file.js";
-import { _parse } from "./api.js";
+import { apiHandler } from "./api.js";
 
 
 const server = http.createServer((req, res) => {
@@ -19,8 +19,7 @@ const server = http.createServer((req, res) => {
     const page = fullURL.pathname
     const params = fullURL.searchParams
     if (page === "/api"){
-        // TODO: handle api here
-        // TODO
+        handleRes(undefined, params, res, undefined, true, false);
     } else {
         returnFile(page, res)
     }
@@ -37,9 +36,9 @@ function returnFile(tmpFile, res) {
     let file = (tmpFile === "/") ? "/index.html" : tmpFile
     // if file exists in the public folder, serve it
     if (fileExists(`public${file}`)) {
-        fs.readFile(`public${file}`, (err, data) => handleRes(err, data, res, file, true))
+        fs.readFile(`public${file}`, (err, data) => handleRes(err, data, res, file, true, true))
     } else {
-        figlet('404!!', (err, data) => handleRes(err, data, res, file, false));
+        figlet('404!!', (err, data) => handleRes(err, data, res, file, false, true));
     }
 }
 /**
@@ -62,23 +61,30 @@ function fileExists(path) {
  * @param {string} file filepath used to check for filetype
  * @param {boolean} success if the file was found this will be true allowing for the server to serve the file
  * in question
+ * @param {boolean} isFile checks if we are sending a file or if its a api request. Handle Response will then cover both cases
  */
-function handleRes(err, data, res, file, success) {
+ function handleRes(err, data, res, file, success, isFile) {
     if (err) {
         console.log('Something went wrong...');
         console.dir(err);
         return;
     } else if (success) {
         // the content type to use. should never be undefined
-        let cType = fileTypes[file.split('.')[1]] //splits the string into an array of 2 elements, from wherever '.' is and returns the extension
+        let suffix = (isFile) ? file.split('.')[1] : "json"
+        let cType = fileTypes[suffix] //splits the string into an array of 2 elements, from wherever '.' is and returns the extension
         // just in case it is, set make sure there is a value
         if (!cType) { cType = "" }
         res.writeHead(200, { 'Content-Type': cType });
     } else {
         res.writeHead(404)
     }
-    res.write(data);
-    res.end();
+    if (isFile) {
+        res.write(data);
+        res.end();
+    } else {
+        // we are sending json back to the client
+        apiHandler(data).then((d) => res.end(JSON.stringify(d)))
+    }
 }
 
 server.listen(8000);
