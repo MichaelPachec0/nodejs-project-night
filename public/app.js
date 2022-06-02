@@ -1,15 +1,16 @@
-// Insert Javascript here
 
-//this function will be called on page load and on reset to get images from the api and insert them into the dom
-async function getImages() {
-    const res = await fetch('/api');
-    const data = await res.json();
-    //console.log can be removed, just used to see the return data initially
-    console.log(data);
+let cardFront = document.querySelectorAll('.card-front');
 
-    //code to put api data into the dom goes here
+let cardBack = document.querySelectorAll('.card-back');
+let cardArray = [...cardBack]
+// REveal pokemon on click
+for(let i=0; i<cardArray.length; i++){
     
+        cardArray[i].addEventListener('click',()=>{
+            for(let j = 0; j<cardFront.length; j++){
+                if(i == j){
+                    cardFront[j].style.transform = 'none';
+                }
+            }
+        })
 }
-
-//call on page load
-getImages();
