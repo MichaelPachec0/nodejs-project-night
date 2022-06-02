@@ -35,3 +35,34 @@ async function returnPokes() {
   }
   return ret
 }
+
+/** 
+ * handles requests and sends them to the actual async functions
+ * @param {url.URLSearchParams} params 
+*/
+async function async_api(params) {
+  // startgame = returnPokes
+  // choice = 2 choices picked
+  // score = always returned
+  if (params.get("startgame")) {
+    let ret = await returnPokes()
+    ret.score = 0
+    return ret
+  } else if (params.get("choice")) {
+    // assume we have to 2 choices choices formatted in a array
+    return { score: (compare(params.get("choices"))) ? "1" : "0" }
+  } else {
+    // Bad request
+    return {}
+  }
+}
+
+
+/** 
+ * the bridge/glue from sync world to async world and back.
+ * @param {url.URLSearchParams} params 
+*/
+export function apiHandler(params) {
+  return  (async (params) => await async_api(params))(params);
+}
+
