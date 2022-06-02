@@ -60,8 +60,8 @@ async function async_api(params) {
     ret.score = 0
     return ret
   } else if (params.get("choice")) {
-    // assume we have to 2 choices choices formatted in a array
-    return { score: (compare(params.get("choices"))) ? "1" : "0" }
+    // assume we have to 2 choices formatted in a array
+    return { score: (compare(JSON.parse(decodeURIComponent(params.get("choice"))))) ? "1" : "0" }
   } else {
     // Bad request
     return {}
