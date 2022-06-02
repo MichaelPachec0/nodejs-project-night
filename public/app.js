@@ -1,5 +1,39 @@
 // Insert Javascript here
 
+//this functions loads up a modal with game instructions and displays user name to DOM
+const modal = document.querySelector(".modal")
+const input = document.querySelector('#input')
+const userName = document.querySelector('#player-name')
+const submit = document.querySelector('#submit')
+const score = document.querySelector('#player-score')
+
+//loads modal 2 seconds after page load
+window.addEventListener('load',() =>{
+    setTimeout(()=>{
+        modal.style.display = "block"
+    },2000)
+})
+
+//displays username and initial score to the DOM after form submit
+submit.onclick = function(){
+  modal.style.display = "none"
+  userName.innerHTML = `Name: ${input.value}` 
+  score.innerHTML = `Score: ${gameScore()}`
+}
+
+//prevents users from playing without entering playername
+window.onclick = function(e){
+  if(e.target == modal){
+    modal.style.display = "block"
+  }
+}
+
+function gameScore(){
+  //game score function can be put here
+    return 0
+
+}
+
 //this function will be called on page load and on reset to get images from the api and insert them into the dom
 async function getImages() {
     const res = await fetch('/api');
