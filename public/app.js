@@ -1,7 +1,6 @@
 // Insert Javascript here
 // this function toggles the pokemon card on click
 let cards = document.querySelectorAll('.card');
-let isVisible = true
 
 cards.forEach(card => {
     card.addEventListener('click', ()=>{
