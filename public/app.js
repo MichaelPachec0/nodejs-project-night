@@ -21,10 +21,32 @@ async function getImages() {
 
     //code to put api data into the dom goes here
 
+    // Example of how to render pokemon cards to DOM: 
+    // initPokemonCards( createPokeImgArr(data) )
 }
 
 //call on page load
 getImages();
+
+// Helper function to create pokemonImage array from response data
+function createPokeImgArr(responseData) {
+    const pokemonData = responseData.data.data;
+    let pokemonImages = [...Array(16).keys()];
+  
+    // Sort images in index order from their randomized position
+    pokemonData.forEach((pokemon, idx) => {
+      // From the spec: response.index retuns an array of pokemon index each images should be at. Example: [ [4, 11], [8, 1] ];
+      // Extract out each unique array resulting: [4, 11]
+      const randomizedIndexArray = responseData.index[idx];
+  
+      // Append pokemon image at their respected index/position
+      randomizedIndexArray.forEach((index) => {
+        pokemonImages[index] = pokemon.images.small;
+      });
+    });
+  
+    return pokemonImages;
+  }
 
 // Initialize pokemon cards facing down
 function initPokemonCards(pokemonArray) {
@@ -32,7 +54,7 @@ function initPokemonCards(pokemonArray) {
 
     // pokemon array ideally will have 16 elements
     // this will create 16 grid cells into the DOM
-    pokemonArray.forEach((obj, index) => {
+    pokemonArray.forEach((image, index) => {
         // Add ids to individual card so that we have a way to hook up event listener if required
         let markup = `
       <div id="card-${index}" class="card">
@@ -40,7 +62,7 @@ function initPokemonCards(pokemonArray) {
           <img class="pokeball" src="poke/poke.png">
         </div>
         <div class="card-front card-face">
-          <img class="squirtle dance" src="${obj.pokemonImage}">
+          <img class="squirtle" src="${image}">
         </div>
       </div>
     `;
@@ -49,4 +71,3 @@ function initPokemonCards(pokemonArray) {
         container.insertAdjacentHTML("beforeend", markup);
     })
 }
-
