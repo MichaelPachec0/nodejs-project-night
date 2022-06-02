@@ -9,9 +9,9 @@ function initPokemonCards(pokemonArray) {
   pokemonArray.forEach((obj, index) => {
     // Add ids to individual card so that we have a way to hook up event listener if required
     let markup = `
-      <div id="card-${index}" class="card hidden">
+      <div id="card-${index}" class="card">
         <div class="card-back card-face">
-          <img class="pokeball" src="../poke/poke.png">
+          <img class="pokeball" src="poke/poke.png">
         </div>
         <div class="card-front card-face">
           <img class="squirtle dance" src="${obj.pokemonImage}">
