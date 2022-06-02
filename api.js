@@ -43,7 +43,7 @@ async function returnPokes() {
  */
 
 async function compare(...choices) {
-  return choices[0].name === choices[1].name
+  return choices[0].id === choices[1].id
 }
 
 
