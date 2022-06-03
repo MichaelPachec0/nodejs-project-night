@@ -1,4 +1,16 @@
 // Insert Javascript here
+// this function toggles the pokemon card on click
+let cards = document.querySelectorAll('.card');
+
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        if (!(card.classList.contains('visible'))) {
+            card.className = 'card visible'
+        } else {
+            card.classList = 'card'
+        }
+    })
+})
 
 //this function will be called on page load and on reset to get images from the api and insert them into the dom
 async function getImages() {
@@ -8,7 +20,7 @@ async function getImages() {
     console.log(data);
 
     //code to put api data into the dom goes here
-    
+
 }
 
 //call on page load
@@ -16,13 +28,13 @@ getImages();
 
 // Initialize pokemon cards facing down
 function initPokemonCards(pokemonArray) {
-  const container = document.querySelector(".game-page");
+    const container = document.querySelector(".game-page");
 
-  // pokemon array ideally will have 16 elements
-  // this will create 16 grid cells into the DOM
-  pokemonArray.forEach((obj, index) => {
-    // Add ids to individual card so that we have a way to hook up event listener if required
-    let markup = `
+    // pokemon array ideally will have 16 elements
+    // this will create 16 grid cells into the DOM
+    pokemonArray.forEach((obj, index) => {
+        // Add ids to individual card so that we have a way to hook up event listener if required
+        let markup = `
       <div id="card-${index}" class="card">
         <div class="card-back card-face">
           <img class="pokeball" src="poke/poke.png">
@@ -33,7 +45,8 @@ function initPokemonCards(pokemonArray) {
       </div>
     `;
 
-    // Append individual card to DOM.
-    container.insertAdjacentHTML("beforeend", markup);
-  })
+        // Append individual card to DOM.
+        container.insertAdjacentHTML("beforeend", markup);
+    })
 }
+
