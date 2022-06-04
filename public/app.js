@@ -14,15 +14,17 @@ cards.forEach(card => {
 
 //this function will be called on page load and on reset to get images from the api and insert them into the dom
 async function getImages() {
-    const res = await fetch('/api');
+  try{
+    const res = await fetch('/api?startgame=1');
     const data = await res.json();
-    //console.log can be removed, just used to see the return data initially
-    console.log(data);
 
     //code to put api data into the dom goes here
 
     // Example of how to render pokemon cards to DOM: 
-    // initPokemonCards( createPokeImgArr(data) )
+    initPokemonCards(createPokeImgArr(data))
+  }catch(err) {
+    console.log(`Error ${err}`)
+  }
 }
 
 //call on page load
