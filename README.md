@@ -1,5 +1,7 @@
 # NodeJs Project Night
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-important.svg)](https://opensource.org/licenses/MIT)
+
 Description goes here...
 
 ## Demo
