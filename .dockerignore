@@ -1,0 +1,6 @@
+# do not use local node_modules folder 
+node_modules/
+# or package-lock.json
+package-lock.json
+# do not upload env, the dashboard should take care of that
+.env
