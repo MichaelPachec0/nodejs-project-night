@@ -1,147 +1,75 @@
-// Create Class to check if cards match
+// Insert Javascript here
 
-class MatchCards {
-    constructor(cards) {
-        this.cardsArray = cards;
-    }
+//this functions load up a modal with game instructions and displays user name to DOM
+const modal = document.querySelector(".modal")
+const input = document.querySelector('#input')
+const userName = document.querySelector('#player-name')
+const submit = document.querySelector('#submit')
+const score = document.querySelector('#player-score')
 
-    startGame() {
-        this.active = true;
-        this.cardToCheck = null;
-        this.matchedCards = [];
-        this.toggleCards();
-        // this.shuffleCards(this.cardsArray);
-    }
-
-    youWin() {
-        document.querySelector('add_a_class_to_display_win').classList.add('visible');
-    }
+//loads modal 2 seconds after page load
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        modal.style.display = "block"
+    }, 2000)
+})
 
 
-    
-    // might need to add a class 'matched' in the CSS file as such, (when card is facing front)
-    // .card.matched .card-front .squirtle {
-    //     animation: add some value here;
-    //   }
-    // to be able to compare while using the methods below
+//displays username and initial score to the DOM after form submit
+submit.onclick = function () {
+    modal.style.display = "none"
+    userName.innerHTML = `Name: ${input.value}`
+    score.innerHTML = `Score: ${gameScore()}`
+}
 
-    
-
-    // this method here can be commented out/deleted if it's being tackled 
-    // toggleCards() {
-    //     this.cardsArray.forEach(card => {
-    //         card.classList.remove('visible');
-    //         card.classList.remove('matched'); //this is the added class from my side
-    //     });
-    // }
-
-
-    // this method here can also be commented out/deleted if it's being tackled
-    // flipCard(card) {
-    //     if(this.canFlipCard(card)) {
-    //         card.classList.add('visible');
-
-    //         if(this.cardToCheck) {
-    //             this.checkForCardMatch(card);
-    //         } else {
-    //             this.cardToCheck = card;
-    //         }
-    //     }
-    // }
-
-    checkForCardMatch(card) {
-        if(this.getCardType(card) === this.getCardType(this.cardToCheck))
-            this.cardMatch(card, this.cardToCheck);
-        else 
-            this.cardMismatch(card, this.cardToCheck);
-
-        this.cardToCheck = null;
-    }
-   
-
-    cardMatch(card1, card2) {
-        this.matchedCards.push(card1);
-        this.matchedCards.push(card2);
-        card1.classList.add('matched'); //this is the added class from my side
-        card2.classList.add('matched');
-        if(this.matchedCards.length === this.cardsArray.length)
-            this.youWin();
-    }
-
-    cardMismatch(card1, card2) {
-      this.active = true;
-      card1.classList.remove('visible');
-      card2.classList.remove('visible');
-      this.active = false;
-      }
-   
-    // backend part
-    // shuffleCards(cardsArray) { 
-    //     for (let i = cardsArray.length - 1; i > 0; i--) {
-    //         let randomIndex = Math.floor(Math.random() * (i + 1));
-    //         cardsArray[randomIndex].style.order = i;
-    //         cardsArray[i].style.order = randomIndex;
-    //     }
-    // }
-
-    getCardType(card) {
-        return card.getElementsByClassName('dance')[0].src;
-    }
-    canFlipCard(card) {
-        return !this.active && !this.matchedCards.includes(card) && card !== this.cardToCheck;
+//prevents users from playing without entering playername
+window.onclick = function(e){
+    if(e.target === modal){
+        modal.style.display = "block"
     }
 }
 
-// this function toggles the pokemon card on click
-let cards = document.querySelectorAll('.card');
+function gameScore() {
+    //game score function can be put here
+    return 0
 
-cards.forEach(card => {
-    card.addEventListener('click', () => {
-        if (!(card.classList.contains('visible'))) {
-            card.className = 'card visible'
-        } else {
-            card.classList = 'card'
-        }
-    })
-})
+}
+
 
 //this function will be called on page load and on reset to get images from the api and insert them into the dom
 async function getImages() {
-  try{
     const res = await fetch('/api?startgame=1');
     const data = await res.json();
+    //console.log can be removed, just used to see the return data initially
+    console.log(data);
 
     //code to put api data into the dom goes here
-
-    // Example of how to render pokemon cards to DOM: 
     initPokemonCards(createPokeImgArr(data))
-  }catch(err) {
-    console.log(`Error ${err}`)
-  }
 }
 
 //call on page load
-getImages();
 
-// Helper function to create pokemonImage array from response data
+
+
+// Initialize pokemon cards facing down
 function createPokeImgArr(responseData) {
     const pokemonData = responseData.data.data;
     let pokemonImages = [...Array(16).keys()];
-  
+
     // Sort images in index order from their randomized position
     pokemonData.forEach((pokemon, idx) => {
-      // From the spec: response.index retuns an array of pokemon index each images should be at. Example: [ [4, 11], [8, 1] ];
-      // Extract out each unique array resulting: [4, 11]
-      const randomizedIndexArray = responseData.index[idx];
-  
-      // Append pokemon image at their respected index/position
-      randomizedIndexArray.forEach((index) => {
-        pokemonImages[index] = pokemon.images.small;
-      });
+        // From the spec: response.index retuns an array of pokemon index each images should be at. Example: [ [4, 11], [8, 1] ];
+        // Extract out each unique array resulting: [4, 11]
+        const randomizedIndexArray = responseData.index[idx];
+
+        // Append pokemon image at their respected index/position
+        randomizedIndexArray.forEach((index) => {
+            pokemonImages[index] = pokemon.images.small;
+        });
     });
-  
+
     return pokemonImages;
-  }
+}
 
 // Initialize pokemon cards facing down
 function initPokemonCards(pokemonArray) {
@@ -157,7 +85,7 @@ function initPokemonCards(pokemonArray) {
           <img class="pokeball" src="poke/poke.png">
         </div>
         <div class="card-front card-face">
-          <img class="squirtle" src="${image}">
+          <img class="squirtle" src="${image}" style="width:100%;height:100%;">
         </div>
       </div>
     `;
@@ -166,3 +94,33 @@ function initPokemonCards(pokemonArray) {
         container.insertAdjacentHTML("beforeend", markup);
     })
 }
+
+// let cards = document.querySelectorAll('.card');
+// let cards = document.getElementsByClassName('main-card')
+// console.log(cards)
+function grabCards() {
+    for (const card of document.getElementsByClassName('card')) {
+        card.addEventListener('click', () => {
+                console.log(card.classList)
+                if (!(card.classList.contains('visible'))) {
+                    card.className = 'card visible'
+                } else {
+                    card.className = 'card'
+                }
+            }
+        )
+    }
+}
+
+getImages().then(_ => {grabCards();console.log("done!")});
+
+// cards.forEach(card => {
+//     console.log(card)
+//     card.addEventListener('click', () => {
+//         if (!(card.classList.contains('visible'))) {
+//             card.className = 'card visible'
+//         } else {
+//             card.classList = 'card'
+//         }
+//     })
+// })
