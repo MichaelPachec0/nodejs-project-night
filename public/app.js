@@ -1,13 +1,13 @@
 // Insert Javascript here
 
-//this functions load up a modal with game instructions and displays user name to DOM
+//this functions load up a modal with game instructions and displays username to DOM
 const modal = document.querySelector(".modal")
 const input = document.querySelector('#input')
 const userName = document.querySelector('#player-name')
 const submit = document.querySelector('#submit')
 const score = document.querySelector('#player-score')
 
-//loads modal 2 seconds after page load
+//loads modal 2 seconds after a page load
 window.addEventListener('load', () => {
     setTimeout(() => {
         modal.style.display = "block"
@@ -22,7 +22,7 @@ submit.onclick = function () {
     score.innerHTML = `Score: ${gameScore()}`
 }
 
-//prevents users from playing without entering playername
+//prevents users from playing without entering player name
 window.onclick = function(e){
     if(e.target === modal){
         modal.style.display = "block"
@@ -36,7 +36,7 @@ function gameScore() {
 }
 
 
-//this function will be called on page load and on reset to get images from the api and insert them into the dom
+//this function will be called on a page load and on reset to get images from the api and insert them into the dom
 async function getImages() {
     const res = await fetch('/api?startgame=1');
     const data = await res.json();
@@ -58,12 +58,15 @@ function createPokeImgArr(responseData) {
 
     // Sort images in index order from their randomized position
     pokemonData.forEach((pokemon, idx) => {
-        // From the spec: response.index retuns an array of pokemon index each images should be at. Example: [ [4, 11], [8, 1] ];
+        // From the spec: response.index returns an array of pokemon index each images should be at.
+        // Example: [ [4, 11], [8, 1] ];
         // Extract out each unique array resulting: [4, 11]
         const randomizedIndexArray = responseData.index[idx];
 
         // Append pokemon image at their respected index/position
         randomizedIndexArray.forEach((index) => {
+            // TODO: small is deprecated, research alternatives and decide if its needed
+            //  ref: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/small
             pokemonImages[index] = pokemon.images.small;
         });
     });
@@ -75,7 +78,7 @@ function createPokeImgArr(responseData) {
 function initPokemonCards(pokemonArray) {
     const container = document.querySelector(".game-page");
 
-    // pokemon array ideally will have 16 elements
+    // pokemon array ideally will have 16 elements.
     // this will create 16 grid cells into the DOM
     pokemonArray.forEach((image, index) => {
         // Add ids to individual card so that we have a way to hook up event listener if required
