@@ -1,11 +1,13 @@
 // Insert Javascript here
 
-//this functions load up a modal with game instructions and displays username to DOM
-const modal = document.querySelector(".modal")
-const input = document.querySelector('#input')
-const userName = document.querySelector('#player-name')
-const submit = document.querySelector('#submit')
-const score = document.querySelector('#player-score')
+//this functions load up a modal with game instructions and displays username
+// to DOM
+const modal = document.querySelector(".modal");
+const input = document.querySelector('#input');
+const userName = document.querySelector('#player-name');
+const submit = document.querySelector('#submit');
+const score = document.querySelector('#player-score');
+const scoreCounter = document.querySelector('#score-counter');
 
 //loads modal 2 seconds after a page load
 window.addEventListener('load', () => {
