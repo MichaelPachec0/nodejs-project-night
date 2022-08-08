@@ -2,8 +2,6 @@
 import fetch from 'node-fetch';
 import { Headers } from 'node-fetch';
 
-//only used for JSlint, need to investigate if there is a better way without requiring a variable init
-import url from 'url'
 
 //Randomize function to allow a different page of cards on each request
 function randomize() {
@@ -18,7 +16,7 @@ async function returnPokes() {
   const headers = new Headers({ 'x-api-key': process.env.API_KEY })
   const resp = await fetch(`https://api.pokemontcg.io/v2/cards?q=supertype:pokemon&pageSize=8&page=${randomize()}`, headers)
   const json = await resp.json()
-  //Shuffling...
+  // Every day I'm shuffling...
   let shuffling_index = json.data.map(_ => {
     let ret = []
     for (let i = 2; i--;) {
@@ -31,47 +29,52 @@ async function returnPokes() {
   })
   const ret = {
     index: shuffling_index,
-    data: json
+    data: json,
+    // TODO: make score relevant or delete from the object being sent to the
+    //  to the user.
+    score: 0,
   }
   return ret
 }
 
 /**
  * 
- * @param  {...object} choices sends poke object
+ * @param  {Array} choices sends poke object
  * @returns {boolean} true if its a match, else false
  */
 
-async function compare(...choices) {
-  return choices[0].id === choices[1].id
+function compare(choices) {
+  return choices[0] === choices[1]
 }
 
 
 /** 
- * handles requests and sends them to the actual async functions
- * @param {url.URLSearchParams} params 
+ * Handles requests and sends them to the actual async functions
+ * @param {url.URLSearchParams} params Parmeters that the client sent to the
+ *  server.
+ * @return {Object} JSON parsable object to send to the client, depending on the
+ *  action the client asked for.
 */
+
 async function async_api(params) {
   // startgame = returnPokes
   // choice = 2 choices picked
   // score = always returned
   if (params.get("startgame")) {
-    let ret = await returnPokes()
-    ret.score = 0
-    return ret
+    return await returnPokes()
   } else if (params.get("choice")) {
-    // assume we have to 2 choices formatted in a array
-    return { score: (compare(JSON.parse(decodeURIComponent(params.get("choice"))))) ? "1" : "0" }
+    const result = compare(JSON.parse(decodeURIComponent(params.get("choice"))))
+    // assume we have to 2 choices formatted in an array
+    return { score: result }
   } else {
     // Bad request
     return {}
   }
 }
 
-
 /** 
- * the bridge/glue from sync world to async world and back.
- * @param {url.URLSearchParams} params 
+ * the bridge/glue from sync world to the async world and back.
+ * @param {URLSearchParams} params
 */
 export function apiHandler(params) {
   return  (async (params) => await async_api(params))(params);
