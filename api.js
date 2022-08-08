@@ -20,6 +20,8 @@ async function returnPokes() {
   let shuffling_index = json.data.map(_ => {
     let ret = []
     for (let i = 2; i--;) {
+      // WARN: Feels Hacky, there is probably a better/more semantic way to do
+      //  this
       let num = Math.floor(Math.random() * ((index.length === 0) ? 0 : index.length - 1))
       let rand = index[num]
       index.splice(num, 1)
@@ -31,7 +33,7 @@ async function returnPokes() {
     index: shuffling_index,
     data: json,
     // TODO: make score relevant or delete from the object being sent to the
-    //  to the user.
+    //  user.
     score: 0,
   }
   return ret
@@ -58,7 +60,7 @@ function compare(choices) {
 
 async function async_api(params) {
   // startgame = returnPokes
-  // choice = 2 choices picked
+  // choice = the 2 choices that were picked
   // score = always returned
   if (params.get("startgame")) {
     return await returnPokes()
