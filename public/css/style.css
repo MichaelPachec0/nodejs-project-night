@@ -1,95 +1,200 @@
-img{
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+
+:root {
+    /*font family*/
+    --ff-input-font: 'VT323', monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img {
     height: 100px;
     width: 100px;
 }
 
-#header{
+#header {
     padding-top: 25px;
     height: 200px;
     width: 600px;
-    
+
 }
 
-header{
+header {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
 }
-.game-page{
+
+/*modal*/
+.modal {
+    display: none;
+    position: fixed;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.modal-content {
+    position: relative;
+    background-color: rgb(53, 106, 188);
+    border-radius: 0.5rem;
+    color: #ffff;
+    padding: 1.2rem;
+    margin: auto;
+    width: 75%;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.5s;
+    animation-name: animatetop;
+    animation-duration: 0.5s
+}
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+/*Player name and score display*/
+.player-details {
+    display: flex;
+    gap: 1rem;
+    font-family: var(--ff-input-font);
+    font-size: 1.5rem;
+}
+
+h1, h2, h4 {
+    font-family: var(--ff-input-font), monospace, sans-serif;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+.game-instruction {
+    font-size: 1rem;
+    font-family: monospace, sans-serif;
+    padding-inline: 1.4rem;
+    line-height: 2;
+}
+
+input[type="text"] {
+    font-size: 1.2rem;
+    font-family: var(--ff-input-font);
+}
+
+.name-submit {
+    background-color: #FFCD00;
+    font-size: 1rem;
+    border: none;
+    font-family: var(--ff-input-font);
+}
+
+.game-page {
     display: grid;
-    grid-template-columns: repeat(4,auto);
+    grid-template-columns: repeat(4, auto);
     grid-gap: 10px;
     margin: 50px;
     justify-content: center;
     perspective: 500px;
 }
- .card {
-     position: relative;
-     height: 175px;
-     width: 125px;
-     transform-style: preserve-3d;
- }
 
- .card-face{
-     position: absolute;
-     width: 100%;
-     height: 100%;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     backface-visibility: hidden;
-     border-radius: 12px;
-     border-width: 1px;
-     border-style: solid;
-     transition: transform 800ms ease-in-out;  
- }
+.card {
+    position: relative;
+    height: 175px;
+    width: 125px;
+    transform-style: preserve-3d;
+}
 
- /* An idea for JavaScript: toggle "hidden" class when clicked. Remove "hidden" class permanently when two cards match*/
- .card.visible .card-back{
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    border-width: 1px;
+    border-style: solid;
+    transition: transform 800ms ease-in-out;
+}
+
+/* An idea for JavaScript: toggle "hidden" class when clicked. Remove "hidden" class permanently when two cards match*/
+.card.visible .card-back {
     transform: rotateY(-180deg);
- }
+}
 
- .card.visible .card-front{
+.card.visible .card-front {
     transform: rotateX(0deg);
- }
+}
 
- .card-back{
+.card-back {
     background-color: rgb(104, 104, 187);
     border-color: black;
- }
+}
 
- .card-front{
-     transform: rotateY(180deg);
-     background-color: orange;
- }
+.card-front {
+    transform: rotateY(180deg);
+    background-color: orange;
+}
 
- .pokeball{
+.pokeball {
     align-self: center;
     transform: scale(.9);
     transform: translationX(5px);
-    transition: transform 100ms ease-in-out;   
+    transition: transform 100ms ease-in-out;
 }
 
 .pokeball:hover {
-   transform: scale(1)
+    transform: scale(1)
+}
+
+.hidden {
+    display: none;
 }
 
 /* Can remove the dance animations below since it might be weird to see a card dancing? */
 
- .card-front .dance{
-     animation: dance 1s linear infinite 1s
- }
+.dance {
+    animation: dance 1s linear infinite 1s;
+    animation-iteration-count: 2;
+}
 
- @keyframes dance{
-     0%, 100% {
-         transform: rotate(0);
-     }
-     25%{
-         transform: rotate(-30deg);
-     }
-     75%{
+@keyframes dance {
+    0%, 100% {
+        transform: rotate(0);
+    }
+    25% {
+        transform: rotate(-30deg);
+    }
+    75% {
         transform: rotate(30deg)
-     }
- }
+    }
+}
 
