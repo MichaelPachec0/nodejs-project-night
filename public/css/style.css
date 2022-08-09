@@ -54,11 +54,11 @@ header {
     width: 75%;
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.5s;
-    animation-name: animatetop;
+    animation-name: animate-top;
     animation-duration: 0.5s
 }
 
-@-webkit-keyframes animatetop {
+@-webkit-keyframes animate-top {
     from {
         top: -300px;
         opacity: 0
@@ -69,7 +69,7 @@ header {
     }
 }
 
-@keyframes animatetop {
+@keyframes animate-top {
     from {
         top: -300px;
         opacity: 0
@@ -164,13 +164,13 @@ input[type="text"] {
     background-color: orange;
 }
 
-.pokeball {
+.poke-ball {
     align-self: center;
     transform: scale(.9);
     transition: transform 100ms ease-in-out;
 }
 
-.pokeball:hover {
+.poke-ball:hover {
     transform: scale(1)
 }
 

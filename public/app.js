@@ -85,19 +85,19 @@ function initPokemonCards(pokemonArray) {
     pokemonArray.forEach((image, index) => {
         // Add ids to individual card so that we have a way to hook up event listener if required
         let markup = `
-      <div id="card-${index}" class="card">
-        <div class="card-back card-face">
-          <img class="pokeball" src="poke/poke.png">
+        <div id="card-${index}" class="card">
+            <div class="card-back card-face">
+                <img class="poke-ball" src="poke/poke.png">
+            </div>
+            <div class="card-front card-face">
+                <img class="poke-card" src="${image}" style="width:100%;height:100%;">
+            </div>
         </div>
-        <div class="card-front card-face">
-          <img class="squirtle" src="${image}" style="width:100%;height:100%;">
-        </div>
-      </div>
     `;
 
         // Append individual card to DOM.
         container.insertAdjacentHTML("beforeend", markup);
-    })
+    });
 }
 
 // let cards = document.querySelectorAll('.card');
