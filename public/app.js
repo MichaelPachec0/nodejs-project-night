@@ -1,4 +1,5 @@
 // Insert Javascript here
+let blocking = true;
 
 //this functions load up a modal with game instructions and displays username
 // to DOM
@@ -100,32 +101,69 @@ function initPokemonCards(pokemonArray) {
     });
 }
 
-// let cards = document.querySelectorAll('.card');
-// let cards = document.getElementsByClassName('main-card')
-// console.log(cards)
-function grabCards() {
+let cards = {
+    "id": [],
+    "list": [],
+};
+
+async function grabCards() {
     for (const card of document.getElementsByClassName('card')) {
-        card.addEventListener('click', () => {
-                console.log(card.classList)
-                if (!(card.classList.contains('visible'))) {
-                    card.className = 'card visible'
-                } else {
-                    card.className = 'card'
-                }
-            }
-        )
+        card.addEventListener('click', await cardHandler);
     }
 }
 
-getImages().then(_ => {grabCards();console.log("done!")});
+/**
+ * Handles most of the logic in the game, including if the cards should be
+ * manipulated, sending the cards picked to the api to be compared to and
+ * scored on, handling the response, and finally winning logic.
+ * @param {Event} E card event, in this case it would a click event
+ */
+async function cardHandler(E) {
+    // currentTarget will return the element that we originally looked for,
+    // on the other hand target will return the element
+    // that initiated the event
+    const e = E.currentTarget;
+    if (e.classList.contains('matched') || blocking) {
+        return;
+    }
+    if (!(e.classList.contains('visible'))) {
+        e.className = 'card visible';
+        if (!cards.id.find(e => e === e.id)) {
+            cards.list.push(document.querySelector(`#${e.id} .poke-card`).src);
+            cards.id.push(e.id);
+        }
+        if (cards.list.length === 2) {
+            // we do a compare, since we do not have an id, send the image url.
+            // in the future, we can always just send the position of the card
+            // in the grid.
+            const choices = encodeURIComponent(JSON.stringify(cards.list));
+            const response = await fetch(`/api?choice=${choices}`);
+            const responseScore = (await response.json()).score;
+            blocking = true;
+            if (responseScore) {
+                // they are the same, make sure we mark them as such.
+                cards.id.forEach(id => document.getElementById(id).className = 'card visible matched dance');
+                score.innerText = `${+score.innerText + 1}`;
+            } else {
+                //they are not the same, reset
+                await new Promise(resolve => setTimeout(_ => {
+                    cards.id.forEach(id => document.getElementById(id).className = 'card');
+                    resolve();
+                }, 1000));
+            }
+            cards.id = [];
+            cards.list = [];
+            blocking = false;
+        }
+    }
+    if (score.innerText === "8") {
+        // Player has won, ask if they want to play again?
+        // TODO: Decide if the winner handler should reside here or
+        //  in another function
+    }
+}
 
-// cards.forEach(card => {
-//     console.log(card)
-//     card.addEventListener('click', () => {
-//         if (!(card.classList.contains('visible'))) {
-//             card.className = 'card visible'
-//         } else {
-//             card.classList = 'card'
-//         }
-//     })
-// })
+
+getImages().then(async () => {
+    await grabCards();
+});
