@@ -19,8 +19,8 @@ const server = http.createServer((req, res) => {
     const fullURL = new url.URL(req.url, base)
     const page = fullURL.pathname
     const params = fullURL.searchParams
-    if (page === "/api"){
-        handleRes(undefined, params, res, undefined, true, false);
+    if (page === "/api") {
+        handleRes(undefined, null, params, res, undefined, true, false);
     } else {
         returnFile(page, res)
     }
@@ -37,9 +37,9 @@ function returnFile(tmpFile, res) {
     let file = (tmpFile === "/") ? "/index.html" : tmpFile
     // if the file exists in the public folder, serve it
     if (fileExists(`public${file}`)) {
-        fs.readFile(`public${file}`, (err, data) => handleRes(err, data, res, file, true, true))
+        fs.readFile(`public${file}`, (err, data) => handleRes(err, data, null, res, file, true, true))
     } else {
-        figlet('404!!', (err, data) => handleRes(err, data, res, file, false, true));
+        figlet('404!!', (err, data) => handleRes(err, data, null, res, file, false, true));
     }
 }
 
@@ -62,13 +62,14 @@ function fileExists(path) {
  * the possible types that this function serves.
  * @param {NodeJS.ErrnoException} err Nodejs error, something went awful if this is not falsy
  * @param {Buffer} data data that was read from file
+ * @param {URLSearchParams} params if we are serving an api request then this is used
  * @param {module:http.ServerResponse} res the response object, used to send back data to the client
  * @param {string} file filepath used to check for filetype
  * @param {boolean} success if the file was found this will be true allowing for the server to serve the file
  * in question
  * @param {boolean} isFile checks if we are sending a file or if its a api request. Handle Response will then cover both cases
  */
- function handleRes(err, data, res, file, success, isFile) {
+function handleRes(err, data, params, res, file, success, isFile) {
     if (err) {
         console.log('Something went wrong...');
         console.dir(err);
@@ -86,11 +87,10 @@ function fileExists(path) {
         res.writeHead(404)
     }
     if (isFile) {
-        res.write(data);
-        res.end();
+        res.end(data);
     } else {
         // we are sending json back to the client
-        apiHandler(data).then((d) => res.end(JSON.stringify(d)))
+        apiHandler(params).then((d) => res.end(JSON.stringify(d)))
     }
 }
 
