@@ -87,10 +87,10 @@ function initPokemonCards(pokemonArray) {
         let markup = `
         <div id="card-${index}" class="card">
             <div class="card-back card-face">
-                <img class="poke-ball" src="poke/poke.png">
+                <img class="poke-ball" src="poke/poke.png" alt="Card #${index} back">
             </div>
             <div class="card-front card-face">
-                <img class="poke-card" src="${image}" style="width:100%;height:100%;">
+                <img class="poke-card" src="${image}" style="width:100%;height:100%;" alt="Card #${index} front">
             </div>
         </div>
     `;
