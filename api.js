@@ -5,8 +5,7 @@ import { Headers } from 'node-fetch';
 
 //Randomize function to allow a different page of cards on each request
 function randomize() {
-  let pageNum = Math.ceil(Math.random() * 100);
-  return pageNum;
+  return Math.ceil(Math.random() * 100);
 }
 
 // now we need to define a function to export, this way server.js can call the function here
@@ -29,14 +28,13 @@ async function returnPokes() {
     }
     return ret
   })
-  const ret = {
+  return {
     index: shuffling_index,
     data: json,
     // TODO: make score relevant or delete from the object being sent to the
     //  user.
     score: 0,
   }
-  return ret
 }
 
 /**
