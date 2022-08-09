@@ -94,4 +94,4 @@ function handleRes(err, data, params, res, file, success, isFile) {
     }
 }
 
-server.listen(8000);
+server.listen(process.env.PORT || 8080);
