@@ -1,4 +1,5 @@
-import { createRequire } from "module";
+import {createRequire} from "module";
+
 const require = createRequire(import.meta.url);
 // load up env variables from the .env file
 require('dotenv').config()
@@ -8,14 +9,14 @@ const fs = require('fs');
 const url = require('url');
 const figlet = require('figlet');
 
-import { fileTypes } from "./file.js";
-import { apiHandler } from "./api.js";
+import {fileTypes} from "./file.js";
+import {apiHandler} from "./api.js";
 
 
 const server = http.createServer((req, res) => {
     // if protocol is undefined, default to http for now
-    const base = ((req.protocol)? req.protocol : "http") + '://' + req.headers.host + '/'
-    const fullURL =  new url.URL(req.url, base)
+    const base = ((req.protocol) ? req.protocol : "http") + '://' + req.headers.host + '/'
+    const fullURL = new url.URL(req.url, base)
     const page = fullURL.pathname
     const params = fullURL.searchParams
     if (page === "/api"){
@@ -34,13 +35,14 @@ const server = http.createServer((req, res) => {
 function returnFile(tmpFile, res) {
     // account for index.html being the root page
     let file = (tmpFile === "/") ? "/index.html" : tmpFile
-    // if file exists in the public folder, serve it
+    // if the file exists in the public folder, serve it
     if (fileExists(`public${file}`)) {
         fs.readFile(`public${file}`, (err, data) => handleRes(err, data, res, file, true, true))
     } else {
         figlet('404!!', (err, data) => handleRes(err, data, res, file, false, true));
     }
 }
+
 /**
  * @param {string} path to check if file exists
  */
@@ -52,6 +54,9 @@ function fileExists(path) {
     }
     return true
 }
+
+// TODO: Might be better to break this into multiple functions, as it
+//  takes 7 parameters.
 /**
  * Handles Response code, sends back the data to the client. Look at the filetypes object in file.js for
  * the possible types that this function serves.
@@ -73,8 +78,10 @@ function fileExists(path) {
         let suffix = (isFile) ? file.split('.')[1] : "json"
         let cType = fileTypes[suffix] //splits the string into an array of 2 elements, from wherever '.' is and returns the extension
         // just in case it is, set make sure there is a value
-        if (!cType) { cType = "" }
-        res.writeHead(200, { 'Content-Type': cType });
+        if (!cType) {
+            cType = ""
+        }
+        res.writeHead(200, {'Content-Type': cType});
     } else {
         res.writeHead(404)
     }
