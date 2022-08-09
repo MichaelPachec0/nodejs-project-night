@@ -167,7 +167,6 @@ input[type="text"] {
 .pokeball {
     align-self: center;
     transform: scale(.9);
-    transform: translationX(5px);
     transition: transform 100ms ease-in-out;
 }
 
